@@ -8,6 +8,7 @@ import { Sidebar } from "./components/layout/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import ActiveMigrations from "./pages/ActiveMigrations";
 import History from "./pages/History";
+import Connections from "./pages/Connections";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/active" element={<ActiveMigrations />} />
                 <Route path="/history" element={<History />} />
+                <Route path="/connections" element={<Connections />} />
               </Routes>
             </main>
           </div>

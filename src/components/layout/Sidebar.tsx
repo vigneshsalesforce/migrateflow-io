@@ -1,4 +1,4 @@
-import { Home, History, Activity } from "lucide-react";
+import { Home, History, Activity, Link } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -7,6 +7,7 @@ const menuItems = [
   { icon: Home, label: "Dashboard", path: "/" },
   { icon: Activity, label: "Active Migrations", path: "/active" },
   { icon: History, label: "History", path: "/history" },
+  { icon: Link, label: "Connections", path: "/connections" },
 ];
 
 export const Sidebar = () => {
@@ -37,4 +38,4 @@ export const Sidebar = () => {
       </div>
     </div>
   );
-};
+}

@@ -5,8 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { MigrationModal } from "@/components/MigrationModal";
 
-// Dummy data
 const metrics = {
   totalFiles: 1234,
   completedFiles: 890,
@@ -22,7 +23,9 @@ const recentMigrations = [
 
 export default function Dashboard() {
   const [isStarting, setIsStarting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleStartMigration = () => {
     setIsStarting(true);
@@ -32,7 +35,7 @@ export default function Dashboard() {
     });
     setTimeout(() => {
       setIsStarting(false);
-      window.location.href = "/active";
+      navigate("/active");
     }, 1500);
   };
 
@@ -41,7 +44,7 @@ export default function Dashboard() {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-migration-text">Dashboard</h1>
         <Button
-          onClick={handleStartMigration}
+          onClick={() => setShowModal(true)}
           disabled={isStarting}
           className="bg-gradient-to-r from-migration-primary to-migration-secondary hover:opacity-90 transition-opacity"
         >
@@ -134,6 +137,12 @@ export default function Dashboard() {
           </div>
         </CardContent>
       </Card>
+
+      <MigrationModal
+        open={showModal}
+        onOpenChange={setShowModal}
+        onStartMigration={handleStartMigration}
+      />
     </div>
   );
 }
