@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Pause, Play, XCircle, CheckCircle, AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Dummy data for active migrations
 const initialMigrations = [
