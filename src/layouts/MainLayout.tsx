@@ -4,10 +4,10 @@ import { Sidebar } from '@/components/layout/Sidebar';
 
 const MainLayout = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-screen flex flex-col overflow-hidden">
       <Navbar />
-      <div className="flex flex-1 h-[calc(100vh-4rem)]">
-        <aside className="hidden md:block w-64 border-r bg-background overflow-y-auto">
+      <div className="flex flex-1 overflow-hidden">
+        <aside className="hidden md:block w-64 border-r bg-background">
           <Sidebar />
         </aside>
         <main className="flex-1 bg-slate-50 overflow-y-auto p-4">
