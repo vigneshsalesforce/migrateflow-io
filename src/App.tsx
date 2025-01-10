@@ -10,33 +10,42 @@ import ActiveMigrations from "./pages/ActiveMigrations";
 import History from "./pages/History";
 import Connections from "./pages/Connections";
 
-const queryClient = new QueryClient();
+function App() {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: false,
+      },
+    },
+  });
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="min-h-screen">
-          <Navbar />
-          <div className="flex">
-            <aside className="w-64 border-r bg-background">
-              <Sidebar />
-            </aside>
-            <main className="flex-1 bg-slate-50">
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/active" element={<ActiveMigrations />} />
-                <Route path="/history" element={<History />} />
-                <Route path="/connections" element={<Connections />} />
-              </Routes>
-            </main>
+  return (
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <div className="min-h-screen">
+            <Navbar />
+            <div className="flex">
+              <aside className="w-64 border-r bg-background">
+                <Sidebar />
+              </aside>
+              <main className="flex-1 bg-slate-50">
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/active" element={<ActiveMigrations />} />
+                  <Route path="/history" element={<History />} />
+                  <Route path="/connections" element={<Connections />} />
+                </Routes>
+              </main>
+            </div>
           </div>
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+        </TooltipProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  );
+}
 
 export default App;
