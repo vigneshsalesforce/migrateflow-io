@@ -5,6 +5,9 @@ export const APP_CONSTANTS = {
     ACTIVE_MIGRATIONS: '/active',
     HISTORY: '/history',
     CONNECTIONS: '/connections',
+    SFREDIRECT: '/redirect/salesforce',
+    SPREDIRECT: '/redirect/sharepoint',
+
   },
   CONNECTION_TYPES: {
     SALESFORCE: 'salesforce',

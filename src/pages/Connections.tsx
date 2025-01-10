@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Cloud, Database } from "lucide-react";
+import { api } from '../utils/api';
+import { AUTH_SALESFORCE_URL, AUTH_SHAREPOINT_URL, BACKEND_URL, WEBSOCKET_URL } from '../config/apiConstants';
 
 export default function Connections() {
   const [salesforceConnected, setSalesforceConnected] = useState(false);
@@ -16,12 +18,32 @@ export default function Connections() {
         title: "Salesforce Connected",
         description: "Successfully connected to Salesforce.",
       });
+      handleSalesforceConnect();
     } else {
       setSharepointConnected(true);
       toast({
         title: "SharePoint Connected",
         description: "Successfully connected to SharePoint.",
       });
+      handleSharepointConnect();
+    }
+  };
+
+  const handleSalesforceConnect = async () => {
+    try {
+      const response = await api(AUTH_SALESFORCE_URL, 'get');
+      window.location.href = response.authURL;
+    } catch (error) {
+      console.error('Failed to initiate Salesforce connect:', error);
+    }
+  };
+
+  const handleSharepointConnect = async () => {
+    try {
+      const response = await api(AUTH_SHAREPOINT_URL, 'get')
+      window.location.href = response.authURL;
+    } catch (error) {
+      console.error('Failed to initiate Sharepoint connect:', error);
     }
   };
 

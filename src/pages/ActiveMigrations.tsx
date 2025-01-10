@@ -1,69 +1,67 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Pause, Play, XCircle, CheckCircle, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-// Dummy data for active migrations
-const initialMigrations = [
-  {
-    id: 1,
-    fileName: "Sales_Report_2024.xlsx",
-    progress: 45,
-    status: "in_progress",
-    size: "2.4 MB",
-  },
-  {
-    id: 2,
-    fileName: "Customer_Data.csv",
-    progress: 78,
-    status: "in_progress",
-    size: "1.8 MB",
-  },
-  {
-    id: 3,
-    fileName: "Marketing_Assets.zip",
-    progress: 100,
-    status: "completed",
-    size: "5.2 MB",
-  },
-  {
-    id: 4,
-    fileName: "Financial_Summary.pdf",
-    progress: 0,
-    status: "error",
-    size: "3.1 MB",
-  },
-];
+import { WEBSOCKET_URL } from "../config/apiConstants";
 
 export default function ActiveMigrations() {
-  const [migrations, setMigrations] = useState(initialMigrations);
+  const [migrations, setMigrations] = useState([]);
   const { toast } = useToast();
+  const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    // Simulate progress updates
-    const interval = setInterval(() => {
-      setMigrations((prev) =>
-        prev.map((migration) => {
-          if (
-            migration.status === "in_progress" &&
-            migration.progress < 100
-          ) {
-            return {
-              ...migration,
-              progress: migration.progress + 1,
-              status: migration.progress + 1 >= 100 ? "completed" : "in_progress",
-            };
-          }
-          return migration;
-        })
-      );
-    }, 1000);
+    // Set up WebSocket
+    wsRef.current = new WebSocket(WEBSOCKET_URL);
+    wsRef.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "fileProgress") {
+        setMigrations((prev) => {
+          const existing = prev.find((m) => m.id === data.fileName);
+          const newItem = {
+            id: data.fileName,
+            fileName: data.fileName,
+            size: `${Math.round(data.fileSize / 1024)} KB`,
+            progress: Math.floor((data.processedFiles / data.totalFiles) * 100),
+            status: data.processedFiles === data.totalFiles ? "completed" : "in_progress",
+          };
+          return existing
+            ? prev.map((m) => (m.id === data.fileName ? newItem : m))
+            : [...prev, newItem];
+        });
+      } else if (data.type === "progress") {
+        // Update progress or add new migration entries
+        setMigrations((prev) => [
+          {
+            id: 1,
+            fileName: "Salesforce Files", // or any placeholder
+            progress: Math.floor(data.progress),
+            status: data.progress >= 100 ? "completed" : "in_progress",
+            size: "N/A",
+          },
+        ]);
+      } else if (data.type === "complete") {
+        // Mark migration as completed
+        setMigrations([
+          {
+            id: 1,
+            fileName: "Salesforce Files",
+            progress: 100,
+            status: "completed",
+            size: "N/A",
+          },
+        ]);
+      }
+    };
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+    };
+  }, [toast]);
 
   const handlePause = (id: number) => {
     setMigrations((prev) =>

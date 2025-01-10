@@ -15,6 +15,10 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from 'react-router-dom';
+import { api } from '../utils/api';
+import { AUTH_SALESFORCE_URL, AUTH_SHAREPOINT_URL, BACKEND_URL, WEBSOCKET_URL } from '../config/apiConstants';
+
 
 interface MigrationModalProps {
   open: boolean;
@@ -30,8 +34,9 @@ export function MigrationModal({
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const handleStart = () => {
+  const handleStart = async () => {
     if (!source || !destination) {
       toast({
         title: "Error",
@@ -40,8 +45,11 @@ export function MigrationModal({
       });
       return;
     }
-    onStartMigration();
+    let selectedObject = 'Account';
     onOpenChange(false);
+    navigate('/active');
+    onStartMigration();
+    await api(`${BACKEND_URL}/migration/start`, 'post', {}, { selectedObject });
   };
 
   return (

@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { MigrationModal } from "@/components/MigrationModal";
 
 const metrics = {
-  totalFiles: 1234,
-  completedFiles: 890,
-  estimatedTime: "2 hours",
-  successRate: "98%",
+  totalFiles: 0,
+  completedFiles: 0,
+  estimatedTime: null,
+  successRate: 0.0,
 };
 
 const recentMigrations = [

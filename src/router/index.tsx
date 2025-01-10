@@ -4,6 +4,7 @@ import Dashboard from '@/pages/Dashboard';
 import ActiveMigrations from '@/pages/ActiveMigrations';
 import History from '@/pages/History';
 import Connections from '@/pages/Connections';
+import Redirect from '@/pages/Redirect';
 import { APP_CONSTANTS } from '@/constants';
 
 export const router = createBrowserRouter([
@@ -27,6 +28,14 @@ export const router = createBrowserRouter([
         path: APP_CONSTANTS.ROUTES.CONNECTIONS,
         element: <Connections />,
       },
+      {
+        path: APP_CONSTANTS.ROUTES.SFREDIRECT,
+        element: <Redirect type="salesforce" />,
+      },
+      {
+        path: APP_CONSTANTS.ROUTES.SPREDIRECT,
+        element: <Redirect type="sharepoint" />,
+      }
     ],
   },
 ]);
