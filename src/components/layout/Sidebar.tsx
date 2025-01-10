@@ -2,12 +2,13 @@ import { Home, History, Activity, Link } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { APP_CONSTANTS } from "@/constants";
 
 const menuItems = [
-  { icon: Home, label: "Dashboard", path: "/" },
-  { icon: Activity, label: "Active Migrations", path: "/active" },
-  { icon: History, label: "History", path: "/history" },
-  { icon: Link, label: "Connections", path: "/connections" },
+  { icon: Home, label: "Dashboard", path: APP_CONSTANTS.ROUTES.DASHBOARD },
+  { icon: Activity, label: "Active Migrations", path: APP_CONSTANTS.ROUTES.ACTIVE_MIGRATIONS },
+  { icon: History, label: "History", path: APP_CONSTANTS.ROUTES.HISTORY },
+  { icon: Link, label: "Connections", path: APP_CONSTANTS.ROUTES.CONNECTIONS },
 ];
 
 export const Sidebar = () => {
@@ -15,7 +16,7 @@ export const Sidebar = () => {
   const location = useLocation();
 
   return (
-    <div className="pb-12 min-h-screen">
+    <div className="pb-12 h-full">
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="space-y-1">
@@ -38,4 +39,4 @@ export const Sidebar = () => {
       </div>
     </div>
   );
-}
+};
